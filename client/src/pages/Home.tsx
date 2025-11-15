@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useAuth } from "@/_core/hooks/useAuth";
 import JewelryScene from '@/components/JewelryScene';
 
 export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const { user, isAuthenticated } = useAuth();
 
   return (
     <div className="bg-black text-white min-h-screen">
@@ -61,7 +63,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Brand Story Section */}
+        {/* Product Section 3 */}
         <section className="h-screen flex items-center justify-center px-8 md:px-16">
           <div className="max-w-2xl text-center">
             <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-8">
@@ -107,6 +109,13 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Auth Status (Debug) */}
+      {isAuthenticated && user && (
+        <div className="fixed top-4 right-4 z-20 text-xs text-gray-400 pointer-events-auto">
+          Logged in as {user.name}
+        </div>
+      )}
     </div>
   );
 }

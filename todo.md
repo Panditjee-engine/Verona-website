@@ -38,8 +38,25 @@
 - [ ] Mobile responsiveness testing
 - [ ] Cross-browser compatibility
 
+## Full-Stack Upgrade
+
+- [x] Upgrade project to web-db-user (server + database)
+- [x] Set up database schema for products and uploads
+- [x] Create API endpoints for file management
+- [x] Implement S3 file storage integration
+- [x] Add file upload UI component
+- [x] Add product management dashboard
+
+## File Storage Features
+
+- [x] Upload jewelry design images
+- [x] Store and retrieve product assets
+- [x] Implement file deletion and management
+- [x] Add file preview functionality
+- [x] Secure file access with authentication
+
 ## Deployment
 
-- [ ] Create checkpoint for initial PoC
+- [ ] Create checkpoint for full-stack version
 - [ ] Deploy to live environment
 - [ ] Gather feedback and iterate
