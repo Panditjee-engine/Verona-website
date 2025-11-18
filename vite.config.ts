@@ -11,6 +11,12 @@ const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(
 
 export default defineConfig({
   plugins,
+  optimizeDeps: {
+    include: [
+      "three",
+      "three/examples/jsm/loaders/FBXLoader",
+    ],
+  },
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),
@@ -40,5 +46,6 @@ export default defineConfig({
       strict: true,
       deny: ["**/.*"],
     },
+    
   },
 });

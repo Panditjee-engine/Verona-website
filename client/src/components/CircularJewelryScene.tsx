@@ -660,7 +660,6 @@
 // 
 
 // Updated complete React component with diamond rendering, bloom, dispersion-like effects, and postprocessing
-
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -668,12 +667,8 @@ import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-gsap.registerPlugin(ScrollTrigger);
-
-export default function JewelryScene({ modelPath = "/diamond-glb.glb", envPath = "/venice.hdr" }) {
+export default function CircularJewelryScene({ modelPath = "/ring-glb.glb", envPath = "/venice.hdr" }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const composerRef = useRef<EffectComposer | null>(null);
@@ -712,26 +707,31 @@ export default function JewelryScene({ modelPath = "/diamond-glb.glb", envPath =
 
     const bloomPass = new UnrealBloomPass(
       new THREE.Vector2(width, height),
-      1.2,
+      0.8,  // Reduced bloom intensity
       0.4,
-      0.0
+      0.85  // Higher threshold so only bright parts bloom
     );
     composer.addPass(bloomPass);
     composerRef.current = composer;
 
     const pmremGen = new THREE.PMREMGenerator(renderer);
 
-    const hemi = new THREE.HemisphereLight(0xffffff, 0x202020, 0.6);
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x444444, 1.0);
     scene.add(hemi);
 
-    const spot = new THREE.SpotLight(0xffffff, 3);
+    const spot = new THREE.SpotLight(0xffffff, 4);
     spot.position.set(4, 6, 3);
     spot.castShadow = true;
     scene.add(spot);
 
-    const fill = new THREE.DirectionalLight(0xffffff, 0.7);
+    const fill = new THREE.DirectionalLight(0xffffff, 0.8);
     fill.position.set(-3, 2, 2);
     scene.add(fill);
+
+    // Additional key light for the diamond
+    const keyLight = new THREE.SpotLight(0xffffff, 3);
+    keyLight.position.set(0, 5, 5);
+    scene.add(keyLight);
 
     const group = new THREE.Group();
     scene.add(group);
@@ -747,152 +747,85 @@ export default function JewelryScene({ modelPath = "/diamond-glb.glb", envPath =
       hdr.dispose();
     });
 
+    // Gold material for the ring band
+    function makeGoldMaterial() {
+      return new THREE.MeshPhysicalMaterial({
+        color: 0xFFD700,
+        metalness: 1,
+        roughness: 0.15,
+        envMapIntensity: 2,
+        clearcoat: 0.5,
+        clearcoatRoughness: 0.1,
+      });
+    }
+
+    // Diamond material for the stone
     function makeDiamondMaterial() {
       return new THREE.MeshPhysicalMaterial({
         transmission: 1,
         ior: 2.42,
-        thickness: 8,
+        thickness: 0.5,
         roughness: 0,
         metalness: 0,
-        envMapIntensity: 4,
+        envMapIntensity: 5,
         clearcoat: 1,
         clearcoatRoughness: 0,
         sheen: 1,
         sheenColor: new THREE.Color(0xffffff),
         sheenRoughness: 0,
-        iridescence: 1.3,
-        iridescenceIOR: 0.9,
-        iridescenceThicknessRange: [50, 400],
+        iridescence: 0.8,
+        iridescenceIOR: 1.3,
+        iridescenceThicknessRange: [100, 400],
         side: THREE.DoubleSide,
       });
     }
 
-    // loader.load(
-    //   modelPath,
-    //   (gltf) => {
-    //     const model = gltf.scene;
+    loader.load(
+      modelPath,
+      (gltf) => {
+        const model = gltf.scene;
 
-    //     const box = new THREE.Box3().setFromObject(model);
-    //     const size = box.getSize(new THREE.Vector3());
-    //     const center = box.getCenter(new THREE.Vector3());
+        const box = new THREE.Box3().setFromObject(model);
+        const size = box.getSize(new THREE.Vector3());
+        const center = box.getCenter(new THREE.Vector3());
 
-    //     model.position.sub(center);
+        model.position.sub(center);
 
-    //     const maxDim = Math.max(size.x, size.y, size.z);
-    //     model.scale.setScalar(1 / maxDim);
+        const maxDim = Math.max(size.x, size.y, size.z);
+        model.scale.setScalar(1 / maxDim);
 
-    //     model.traverse((child) => {
-    //       if (child instanceof THREE.Mesh)  {
-    //         child.castShadow = true;
-    //         child.receiveShadow = true;
-    //         child.material = makeDiamondMaterial();
-    //       }
-    //     });
+        // Apply materials based on mesh name or position
+        model.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+            
+            // Check if it's the diamond (usually higher up or has specific name)
+            // You may need to adjust this logic based on your model's structure
+            const isDiamond = child.name.toLowerCase().includes('diamond') || 
+                             child.name.toLowerCase().includes('stone') ||
+                             child.name.toLowerCase().includes('gem') ||
+                             child.position.y > 0.3; // Diamond is usually on top
+            
+            if (isDiamond) {
+              child.material = makeDiamondMaterial();
+            } else {
+              child.material = makeGoldMaterial();
+            }
+          }
+        });
 
-    //     group.add(model);
-    //   }
-    // );
-
-    // loader.load(modelPath, (gltf) => {
-    //   const base = gltf.scene;
-
-    //   // --- CENTER & SCALE THE MODEL ---
-    //   const box = new THREE.Box3().setFromObject(base);
-    //   const size = box.getSize(new THREE.Vector3());
-    //   const center = box.getCenter(new THREE.Vector3());
-
-    //   base.position.sub(center);                   // move pivot to center
-    //   const maxDim = Math.max(size.x, size.y, size.z);
-    //   base.scale.setScalar(0.5 / maxDim);          // scale down properly
-
-
-    //   // --- MATERIAL SETUP ---
-    //   base.traverse((child) => {
-    //     if (child instanceof THREE.Mesh) {
-    //       child.castShadow = true;
-    //       child.receiveShadow = true;
-    //       child.material = makeDiamondMaterial();
-    //     }
-    //   });
-
-    //   // --- CIRCLE LAYOUT ---
-    //   const count = 8;
-    //   const radius = 1.2;    // <<< MUCH BIGGER RADIUS
-
-    //   for (let i = 0; i < count; i++) {
-    //     const clone = base.clone(true);
-
-    //     const angle = (i / count) * Math.PI * 2;
-
-    //     clone.position.set(
-    //       Math.cos(angle) * radius,
-    //       0,
-    //       Math.sin(angle) * radius
-    //     );
-
-    //     clone.lookAt(0, 0, 0); // make each diamond point inward
-
-    //     group.add(clone);
-    //   }
-    // });
-
-    loader.load(modelPath, (gltf) => {
-      const base = gltf.scene;
-
-      // --- CENTER & SCALE THE MODEL ---
-      const box = new THREE.Box3().setFromObject(base);
-      const size = box.getSize(new THREE.Vector3());
-      const center = box.getCenter(new THREE.Vector3());
-
-      base.position.sub(center);
-      const maxDim = Math.max(size.x, size.y, size.z);
-      base.scale.setScalar(0.5 / maxDim);
-
-      // --- DIAMOND MATERIAL ---
-      base.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-          child.castShadow = true;
-          child.receiveShadow = true;
-          child.material = makeDiamondMaterial();
-        }
-      });
-
-      // --- SPIRAL CAROUSEL LAYOUT ---
-      const count = 12;        // total diamonds
-      const radius = 1.8;      // how wide the spiral is
-      const height = 8;      // how tall the spiral climbs
-      const turns = 4;         // how many spiral rotations
-
-      for (let i = 0; i < count; i++) {
-        const clone = base.clone(true);
-
-        const t = i / count;
-        const angle = t * Math.PI * 2 * turns;
-
-        clone.position.set(
-          Math.cos(angle) * radius,
-          t * height - height / 2, // centered vertically
-          Math.sin(angle) * radius
-        );
-
-        // Diamonds rotate to face center AND tilt slightly upward
-        clone.lookAt(0, 0.2, 0);
-
-        group.add(clone);
+        group.add(model);
       }
-    });
-
-
-
+    );
 
     clockRef.current = new THREE.Clock();
 
     const animate = () => {
       const delta = clockRef.current!.getDelta();
 
-
       if (jewelryRef.current) {
-        jewelryRef.current.rotation.y += 0.1;
+        jewelryRef.current.rotation.y += 0.3; // Slightly faster rotation
       }
 
       composer.render();
@@ -910,8 +843,7 @@ export default function JewelryScene({ modelPath = "/diamond-glb.glb", envPath =
   return (
     <div
       ref={containerRef}
-      className="bg-red"
-      style={{ width: "100%", height: "100vh", position: "sticky", top: 0 }}
+      style={{ width: "50%", height: "100vh", position: "fixed", top: 0, left: 0, right:0, zIndex: 1}}
     />
   );
 }
