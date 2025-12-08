@@ -15,6 +15,12 @@ export default function CircularJewelryScene({ modelPath = "/ring-glb.glb", envP
   const clockRef = useRef<THREE.Clock | null>(null);
   const jewelryRef = useRef<THREE.Group | null>(null);
 
+  // ---- 🖱 Interaction State ----
+  const isDraggingRef = useRef(false);
+  const previousMouseX = useRef(0);
+  const rotationVelocity = useRef(0);
+  const autoRotate = useRef(true);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -197,6 +203,35 @@ export default function CircularJewelryScene({ modelPath = "/ring-glb.glb", envP
     };
 
     animate(0);
+
+
+    // ---- 🖱 Mouse Event Handlers ----
+    const onMouseDown = (event: MouseEvent) => {
+      isDraggingRef.current = true;
+      previousMouseX.current = event.clientX;
+    };
+
+    const onMouseMove = (event: MouseEvent) => {
+      if (!isDraggingRef.current || !jewelryRef.current) return;
+
+      const deltaX = event.clientX - previousMouseX.current;
+      previousMouseX.current = event.clientX;
+
+      const rotationStrength = 0.005;
+      jewelryRef.current.rotation.y += deltaX * rotationStrength;
+      rotationVelocity.current = deltaX * rotationStrength; // continue motion after release
+    };
+
+    const stopDragging = () => {
+      isDraggingRef.current = false;
+    };
+
+
+    container.addEventListener("mousedown", onMouseDown);
+    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mouseup", stopDragging);
+    window.addEventListener("mouseleave", stopDragging);
+
 
     // Handle resize
     const handleResize = () => {

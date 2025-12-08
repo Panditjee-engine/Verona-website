@@ -71,7 +71,7 @@ export default function AboutPage() {
           </div>
           <div className="relative h-96 rounded-lg overflow-hidden border border-white/10">
             <img
-              src="/heritage.jpg"
+              src=""
               alt="VERONA heritage workshop"
               className="w-full h-full object-cover"
             />
