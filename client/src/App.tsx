@@ -7,13 +7,18 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import GradientBackgroundPage from "./pages/GradientBackgroundPage";
+import AboutPage from "./pages/AboutPage";
+import ShopPage from "./pages/ShopPage";
+import ContactPage from "./pages/ContactPage";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
-      <Route path={"/admin"} component={Admin} />
+      <Route path={"/about"} component={AboutPage} />
+      <Route path={"/shop"} component={ShopPage} />
+      <Route path={"/contact"} component={ContactPage} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
