@@ -10,6 +10,7 @@ import GradientBackgroundPage from "./pages/GradientBackgroundPage";
 import AboutPage from "./pages/AboutPage";
 import ShopPage from "./pages/ShopPage";
 import ContactPage from "./pages/ContactPage";
+import CollectionPage from "./pages/CollectionPage";
 
 function Router() {
   // make sure to consider if you need authentication for certain routes
@@ -18,6 +19,7 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={AboutPage} />
       <Route path={"/shop"} component={ShopPage} />
+      <Route path={"/collectionPage"} component={CollectionPage} />
       <Route path={"/contact"} component={ContactPage} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

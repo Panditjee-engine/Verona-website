@@ -1,19 +1,14 @@
-"use client";
-
 import Navbar from "@/components/Navbar";
-import { Link } from "lucide-react";
 import { useState } from "react";
- import { useLocation } from "wouter";
+import { useNavigate } from "react-router-dom";
 
-export default function ShopPage() {
- 
-  const [location, setLocation] = useLocation();
+export default function CollectionPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [priceRange, setPriceRange] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [viewMode, setViewMode] = useState("grid"); // grid or list
   const [cartCount, setCartCount] = useState(0);
-
+const navigate = useNavigate();
   // Product data
   const products = [
     {
@@ -136,11 +131,7 @@ export default function ShopPage() {
 
   return (
     <div className="bg-black text-white min-h-screen">
-      {/* NAVIGATION */}
-
-      <Navbar activePage="shop" cartCount={3} />
-
-      {/* PASTE THE BACKGROUND IMAGE CODE HERE 👇 */}
+        <Navbar />
       <div
         className="fixed inset-0 z-0"
         style={{
@@ -150,9 +141,7 @@ export default function ShopPage() {
           backgroundRepeat: "no-repeat",
         }}
       ></div>
-
       <div className="relative z-10">
-        {/* HERO SECTION */}
         <section className="pt-32 pb-16 px-6">
           <div className="max-w-7xl mx-auto text-center">
             <h2 className="text-6xl font-light tracking-wider mb-6">
@@ -381,14 +370,11 @@ export default function ShopPage() {
         </div>
 
         {/* BESPOKE CTA SECTION */}
-        <div>
-            <Link to="/collectionPage"></Link>
-            <button  onClick={() => setLocation("/collectionPage")} className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium">
-              View All
-            </button>
-          </div>
         <section className="border border-white/10 rounded-lg p-8 md:p-12 bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm">
-          <div className="max-w-4xl mx-auto text-center">
+          <div
+            className="max-w-4xl m
+                    x-auto text-center"
+          >
             <h2 className="text-6xl font-light tracking-wider mb-6">
               Create Your Masterpiece
             </h2>
@@ -400,32 +386,7 @@ export default function ShopPage() {
               START CUSTOM DESIGN
             </button>
           </div>
-          
         </section>
-
-        {/* FOOTER */}
-        <footer className="border-t border-white/10 py-12 px-6">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-2xl font-light tracking-widest">VERONA</div>
-            <div className="flex gap-8 text-sm text-gray-400">
-              <a href="/" className="hover:text-white transition">
-                Home
-              </a>
-              <a href="/about" className="hover:text-white transition">
-                About
-              </a>
-              <a href="/shop" className="hover:text-white transition">
-                Shop
-              </a>
-              <a href="/contact" className="hover:text-white transition">
-                Contact
-              </a>
-            </div>
-            <div className="text-xs text-gray-600">
-              © 2024 VERONA. All rights reserved.
-            </div>
-          </div>
-        </footer>
       </div>
     </div>
   );
