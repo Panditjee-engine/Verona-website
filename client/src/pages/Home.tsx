@@ -65,6 +65,41 @@ export default function Home() {
   return (
     <div className="text-white min-h-screen scroll-smooth">
 
+      {/* NAVIGATION BAR */}
+      <nav className="fixed top-0 left-0 right-0 z-50 pointer-events-auto">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex items-center justify-between backdrop-blur-md bg-black/20 border border-white/10 rounded-full px-8 py-4">
+            {/* Logo */}
+            <div className="text-2xl font-light tracking-widest">
+              VERONA
+            </div>
+            
+            {/* Navigation Links */}
+            <div className="hidden md:flex items-center gap-8 text-sm tracking-wider">
+              <a href="#home" className="hover:text-gray-300 transition-colors duration-300">
+                HOME
+              </a>
+              <a href="#about" className="hover:text-gray-300 transition-colors duration-300">
+                ABOUT
+              </a>
+              <a href="#shop" className="hover:text-gray-300 transition-colors duration-300">
+                SHOP
+              </a>
+              <a href="#contact" className="hover:text-gray-300 transition-colors duration-300">
+                CONTACT
+              </a>
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button className="md:hidden text-white">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+
       {/* PASTE THE BACKGROUND IMAGE CODE HERE 👇 */}
       <div
         className="fixed inset-0 z-0"
