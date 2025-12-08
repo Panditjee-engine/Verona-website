@@ -25,7 +25,7 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
     if (!container) return;
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x000000);
+    scene.background = null;
     sceneRef.current = scene;
 
     const width = container.clientWidth;
@@ -35,8 +35,8 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
     camera.position.set(0, 0, 6);
     cameraRef.current = camera;
 
-    const renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
       alpha: true,
       powerPreference: "high-performance"
     });
@@ -47,20 +47,21 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
     renderer.toneMappingExposure = 1.4;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-
+    renderer.setClearColor(0x000000, 0);
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
     const composer = new EffectComposer(renderer);
     composer.addPass(new RenderPass(scene, camera));
 
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(width, height),
-      1.5,
-      0.6,
-      0.1
-    );
-    composer.addPass(bloomPass);
+    // const bloomPass = new UnrealBloomPass(
+    //   new THREE.Vector2(width, height),
+    //   0.5,  // Reduced bloom strength
+    //   0.3,  // Reduced radius
+    //   0.3   // Higher threshold
+    // );
+
+    // composer.addPass(bloomPass);
     composerRef.current = composer;
 
     const pmremGen = new THREE.PMREMGenerator(renderer);
@@ -76,8 +77,8 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
     mainSpot.decay = 2;
     mainSpot.distance = 50;
     mainSpot.castShadow = true;
-    mainSpot.shadow.mapSize.width = 2048;
-    mainSpot.shadow.mapSize.height = 2048;
+    mainSpot.shadow.mapSize.width = 1024;
+    mainSpot.shadow.mapSize.height = 1024;
     scene.add(mainSpot);
 
     const spot2 = new THREE.SpotLight(0xadd8e6, 4);
@@ -124,25 +125,25 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
 
     function makeDiamondMaterial() {
       return new THREE.MeshPhysicalMaterial({
-        transmission: 1,
+        transmission: 0.9,
         ior: 2.417,
-        thickness: 2,
-        roughness: 0,
+        thickness: 1.5,  // Reduced
+        roughness: 0.05,  // Slightly increased
         metalness: 0,
-        envMapIntensity: 8,
+        envMapIntensity: 4,  // Reduced from 8
         clearcoat: 1,
-        clearcoatRoughness: 0,
-        sheen: 2,
+        clearcoatRoughness: 0.1,  // Slightly increased
+        sheen: 1,  // Reduced
         sheenColor: new THREE.Color(0xffffff),
-        sheenRoughness: 0,
-        iridescence: 1.5,
-        iridescenceIOR: 1.5,
-        iridescenceThicknessRange: [100, 600],
-        specularIntensity: 1,
+        sheenRoughness: 0.2,  // Increased
+        iridescence: 0.8,  // Reduced
+        iridescenceIOR: 1.3,
+        iridescenceThicknessRange: [100, 400],  // Reduced range
+        specularIntensity: 0.8,  // Reduced
         specularColor: new THREE.Color(0xffffff),
         attenuationDistance: 0.5,
         attenuationColor: new THREE.Color(0xffffff),
-        side: THREE.DoubleSide,
+        side: THREE.FrontSide,  // Changed from DoubleSide
         transparent: true,
         opacity: 0.98,
       });
@@ -190,7 +191,7 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
 
       // Calculate total animation time and add 1 second delay
       const totalDuration = 1.2 + 0.8 + (diamondsRef.current.length * 0.025) + 1;
-      
+
       // Schedule next animation
       setTimeout(() => {
         animateSpread();
@@ -212,16 +213,16 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
         if (child instanceof THREE.Mesh) {
           child.castShadow = true;
           child.receiveShadow = true;
-          
+
           if (child.geometry) {
             child.geometry.computeVertexNormals();
           }
-          
+
           child.material = makeDiamondMaterial();
         }
       });
 
-      const count = 18;
+      const count = 12;
       const spreadRadius = 20;
 
       for (let i = 0; i < count; i++) {
@@ -229,7 +230,7 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
 
         const angle = (i / count) * Math.PI * 2 + Math.random() * 0.5;
         const distance = 0.5 + Math.random() * spreadRadius;
-        
+
         const finalX = Math.cos(angle) * distance;
         const finalY = (Math.random() - 0.5) * 3;
         const finalZ = Math.sin(angle) * distance - 2 + Math.random() * 4;
@@ -272,12 +273,12 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
         jewelryRef.current.children.forEach((diamond, i) => {
           const floatSpeed = 1.2 + (i % 4) * 0.2;
           const floatAmount = 0.05;
-          
+
           diamond.position.y += Math.sin(time * floatSpeed + i) * floatAmount * delta;
           diamond.position.z += Math.cos(time * floatSpeed * 0.5 + i) * floatAmount * delta * 0.5;
-          
-          diamond.rotation.y += 0.3 * delta;
-          diamond.rotation.x += 0.3 * delta;
+
+          diamond.rotation.y += 0.003 * delta;
+          diamond.rotation.x += 0.003 * delta;
         });
       }
 
@@ -291,7 +292,7 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
       if (!container) return;
       const newWidth = container.clientWidth;
       const newHeight = container.clientHeight;
-      
+
       camera.aspect = newWidth / newHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(newWidth, newHeight);
@@ -310,7 +311,7 @@ export default function SpreadingJewelryScene({ modelPath = "/diamond-glb.glb", 
   return (
     <div
       ref={containerRef}
-      style={{ width: "100%", height: "100vh", position: "sticky", top: 0 }}
+      style={{ width: "100%", height: "100vh", position: "sticky", top: 0, background:"transparent" }}
     />
   );
 }
