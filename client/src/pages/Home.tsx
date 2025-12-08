@@ -204,7 +204,7 @@ export default function Home() {
         {/* -------------------------------------------------------
             SECTION 1 — CIRCULAR SCENE
         -------------------------------------------------------- */}
-        <section
+         <section
           data-section="1"
           className="h-screen flex items-center justify-end px-8 md:px-16"
         >
