@@ -2,6 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import { useState } from "react";
+import { ChevronDown } from 'lucide-react';
 
 export default function ContactPage() {
     const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ export default function ContactPage() {
         subject: "general",
         message: ""
     });
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
 
@@ -43,10 +45,54 @@ export default function ContactPage() {
         }, 3000);
     };
 
+    const faqs = [
+    {
+      q: "How do I schedule a consultation?",
+      a: "You can book a consultation through our contact form, by calling us directly, or by visiting our atelier. We recommend booking at least 2 weeks in advance for custom designs."
+    },
+    {
+      q: "What is the typical timeline for custom pieces?",
+      a: "Custom jewelry typically takes 6-12 weeks from initial consultation to completion, depending on the complexity of the design and stone sourcing requirements."
+    },
+    {
+      q: "Do you offer international shipping?",
+      a: "Yes, we ship worldwide with fully insured, secure delivery. International orders typically arrive within 5-10 business days."
+    },
+    {
+      q: "What is your return policy?",
+      a: "We offer a 30-day return policy for non-custom pieces. Custom-designed jewelry is final sale, though we work closely with you throughout the process to ensure satisfaction."
+    },
+    {
+      q: "Do you provide certificates of authenticity?",
+      a: "Every piece comes with a certificate of authenticity detailing materials, gemstone specifications, and craftsmanship details."
+    }
+  ];
+
+  const toggleAccordion = (index:number) => {
+   setOpenIndex(openIndex === index ? null : index);
+  };
+
+
+
     return (
         <div className="bg-black text-white min-h-screen">
             {/* NAVIGATION */}
             <Navbar activePage="contact" />
+
+            {/* PASTE THE BACKGROUND IMAGE CODE HERE 👇 */}
+            <div
+                className="fixed inset-0 z-0"
+                style={{
+                    backgroundImage: 'url(/background-theme.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }}
+            >
+
+            </div>
+
+<div className="relative z-10">
 
             {/* HERO SECTION */}
             <section className="pt-32 pb-16 px-6">
@@ -55,7 +101,7 @@ export default function ContactPage() {
                         GET IN TOUCH
                     </h1>
                     <div className="w-24 h-px bg-white mx-auto mb-6"></div>
-                    <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+                    <p className="text-xl ext-white-400 max-w-2xl mx-auto">
                         We're here to help you create something extraordinary.
                         Reach out to our team of specialists.
                     </p>
@@ -248,43 +294,49 @@ export default function ContactPage() {
             </div>
 
             {/* FAQ SECTION */}
-            <section className="py-20 px-6 bg-gradient-to-b from-black via-gray-900 to-black border-y border-white/10">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-12 text-center">
-                        Frequently Asked Questions
-                    </h2>
+         
 
-                    <div className="space-y-6">
-                        {[
-                            {
-                                q: "How do I schedule a consultation?",
-                                a: "You can book a consultation through our contact form, by calling us directly, or by visiting our atelier. We recommend booking at least 2 weeks in advance for custom designs."
-                            },
-                            {
-                                q: "What is the typical timeline for custom pieces?",
-                                a: "Custom jewelry typically takes 6-12 weeks from initial consultation to completion, depending on the complexity of the design and stone sourcing requirements."
-                            },
-                            {
-                                q: "Do you offer international shipping?",
-                                a: "Yes, we ship worldwide with fully insured, secure delivery. International orders typically arrive within 5-10 business days."
-                            },
-                            {
-                                q: "What is your return policy?",
-                                a: "We offer a 30-day return policy for non-custom pieces. Custom-designed jewelry is final sale, though we work closely with you throughout the process to ensure satisfaction."
-                            },
-                            {
-                                q: "Do you provide certificates of authenticity?",
-                                a: "Every piece comes with a certificate of authenticity detailing materials, gemstone specifications, and craftsmanship details."
-                            }
-                        ].map((faq, i) => (
-                            <div key={i} className="border border-white/10 rounded-lg p-6 hover:border-white/30 transition-all duration-300">
-                                <h3 className="text-lg tracking-wide mb-3">{faq.q}</h3>
-                                <p className="text-gray-400 text-sm leading-relaxed">{faq.a}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
+            <section className="border border-white/10 rounded-lg p-8 md:p-12 bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-12 text-center">
+          Frequently Asked Questions
+        </h2>
+
+        <div className="space-y-4">
+          {faqs.map((faq, i) => (
+            <div 
+              key={i} 
+              className="border border-white/10 rounded-lg overflow-hidden hover:border-white/30 transition-all duration-300"
+            >
+              <button
+                onClick={() => toggleAccordion(i)}
+                className="w-full flex items-center justify-between p-6 text-left hover:bg-white/5 transition-colors duration-200"
+              >
+                <h3 className="text-lg tracking-wide pr-4">{faq.q}</h3>
+                <ChevronDown 
+                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
+                    openIndex === i ? 'rotate-180' : ''
+                  }`}
+                />
+              </button>
+              
+              <div 
+                className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                  openIndex === i ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                }`}
+              >
+                <p className="text-gray-400 text-sm leading-relaxed px-6 pb-6">
+                  {faq.a}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+
+            
 
             {/* MAP SECTION */}
             <section className="py-20 px-6">
@@ -303,7 +355,7 @@ export default function ContactPage() {
             </section>
 
             {/* CTA SECTION */}
-            <section className="py-20 px-6 bg-gradient-to-b from-black to-gray-900">
+            <section className="border border-white/10 rounded-lg p-8 md:p-12 bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm">
                 <div className="max-w-4xl mx-auto text-center">
                     <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-6">
                         Ready to Create Your Legacy?
@@ -333,6 +385,7 @@ export default function ContactPage() {
                     </div>
                 </div>
             </footer>
+            </div>
         </div>
     );
 }
