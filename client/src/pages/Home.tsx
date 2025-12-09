@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-
+import { useNavigate } from "react-router-dom";
 // Mock auth hook for demo
 const useAuth = () => ({
   user: null,
@@ -27,6 +27,7 @@ export default function Home() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const { user, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
 
   /* -------------------------------------------------------
     SCROLL PROGRESS HANDLER
@@ -69,7 +70,7 @@ export default function Home() {
     <div className="text-white min-h-screen scroll-smooth">
 
       {/* NAVIGATION BAR */}
-   
+
 
       <Navbar activePage="home" cartCount={0} />
 
@@ -104,7 +105,7 @@ export default function Home() {
             floatingCount={6}
           /> */}
 
-          <div style={{width: "100%", height: "100%" }}>
+          <div style={{ width: "100%", height: "100%" }}>
             <JewelryScene />
           </div>
 
@@ -179,7 +180,7 @@ export default function Home() {
         {/* -------------------------------------------------------
             SECTION 1 — CIRCULAR SCENE
         -------------------------------------------------------- */}
-         <section
+        <section
           data-section="1"
           className="h-screen flex items-center justify-end px-8 md:px-16"
         >
@@ -187,14 +188,21 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-4">
               The Signature Ring
             </h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
+            <p className="text-white-300 mb-6 leading-relaxed">
               Crafted from ethically sourced gold and adorned with a
               hand-selected diamond, each piece is a masterpiece of precision.
             </p>
-            <div className="text-sm text-gray-400 space-y-2">
+            <div className="text-sm text-white-400 space-y-2">
               <p>18K Gold • Certified Diamond • Handcrafted</p>
-              <p className="text-gray-500">Starting at $8,500</p>
+              <p className="text-white-500">Starting at $8,500</p>
             </div>
+
+            <button
+              onClick={() => navigate("/collectionPage")}
+              className="px-8 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium"
+            >
+              Explore
+            </button>
           </div>
         </section>
 
@@ -209,13 +217,20 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-4">
               Bespoke Customization
             </h2>
-            <p className="text-gray-300 mb-6 leading-relaxed">
+            <p className="text-white-300 mb-6 leading-relaxed">
               Customize your piece from metal selection to stone specifications,
               working directly with master jewelers.
             </p>
-            <div className="text-sm text-gray-400">
+            <div className="text-sm text-white-400">
               <p>Unlimited Customization • Expert Consultation • Lifetime Care</p>
             </div>
+
+            <button
+              onClick={() => navigate("/collectionPage")}
+              className="px-8 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium"
+            >
+              Explore
+            </button>
           </div>
         </section>
 

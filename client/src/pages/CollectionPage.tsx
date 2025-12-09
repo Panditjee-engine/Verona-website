@@ -1,6 +1,8 @@
 import Navbar from "@/components/Navbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+
 
 export default function CollectionPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -8,6 +10,7 @@ export default function CollectionPage() {
   const [sortBy, setSortBy] = useState("featured");
   const [viewMode, setViewMode] = useState("grid"); // grid or list
   const [cartCount, setCartCount] = useState(0);
+
 const navigate = useNavigate();
   // Product data
   const products = [
@@ -129,9 +132,17 @@ const navigate = useNavigate();
     setCartCount(cartCount + 1);
   };
 
+
+  useEffect(() => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}, []);
+
+
+  
+
   return (
     <div className="bg-black text-white min-h-screen">
-        <Navbar />
+        
       <div
         className="fixed inset-0 z-0"
         style={{
@@ -370,23 +381,7 @@ const navigate = useNavigate();
         </div>
 
         {/* BESPOKE CTA SECTION */}
-        <section className="border border-white/10 rounded-lg p-8 md:p-12 bg-gradient-to-br from-gray-900/50 to-black/50 backdrop-blur-sm">
-          <div
-            className="max-w-4xl m
-                    x-auto text-center"
-          >
-            <h2 className="text-6xl font-light tracking-wider mb-6">
-              Create Your Masterpiece
-            </h2>
-            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-              Can't find exactly what you're looking for? Work with our master
-              jewelers to create a bespoke piece designed exclusively for you.
-            </p>
-            <button className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium">
-              START CUSTOM DESIGN
-            </button>
-          </div>
-        </section>
+      
       </div>
     </div>
   );
