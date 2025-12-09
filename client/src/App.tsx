@@ -1,7 +1,7 @@
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
@@ -10,37 +10,37 @@ import GradientBackgroundPage from "./pages/GradientBackgroundPage";
 import AboutPage from "./pages/AboutPage";
 import ShopPage from "./pages/ShopPage";
 import ContactPage from "./pages/ContactPage";
+import CollectionPage from "./pages/CollectionPage";
 
-function Router() {
-  // make sure to consider if you need authentication for certain routes
+function AppRouter() {
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/about"} component={AboutPage} />
-      <Route path={"/shop"} component={ShopPage} />
-      <Route path={"/contact"} component={ContactPage} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<AboutPage />} />
+      <Route path="/shop" element={<ShopPage />} />
+      <Route path="/collectionPage" element={<CollectionPage />} />
+      <Route path="/contact" element={<ContactPage />} />
+
+      {/* Optional pages */}
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/gradient" element={<GradientBackgroundPage />} />
+
+      {/* Redirect unknown routes to 404 */}
+      <Route path="/404" element={<NotFound />} />
+      <Route path="*" element={<Navigate to="/404" replace />} />
+    </Routes>
   );
 }
-
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="dark"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
-          <Router />
+          <BrowserRouter>
+            <AppRouter />
+          </BrowserRouter>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
