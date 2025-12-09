@@ -2,7 +2,7 @@ import Navbar from "@/components/Navbar";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-
+import { useParams } from "react-router-dom";
 
 export default function CollectionPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -10,8 +10,11 @@ export default function CollectionPage() {
   const [sortBy, setSortBy] = useState("featured");
   const [viewMode, setViewMode] = useState("grid"); // grid or list
   const [cartCount, setCartCount] = useState(0);
+  
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  const { category } = useParams();
   // Product data
   const products = [
     {
@@ -134,15 +137,25 @@ const navigate = useNavigate();
 
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
+
+  useEffect(() => {
+  if (category) {
+    setSelectedCategory(category);
+  }
   window.scrollTo({ top: 0, behavior: "smooth" });
-}, []);
+}, [category]);
 
 
-  
+
 
   return (
     <div className="bg-black text-white min-h-screen">
-        
+
+      <Navbar />
+
       <div
         className="fixed inset-0 z-0"
         style={{
@@ -176,11 +189,10 @@ const navigate = useNavigate();
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
-                    className={`px-6 py-2 rounded-full text-sm tracking-wider transition-all duration-300 ${
-                      selectedCategory === cat
+                    className={`px-6 py-2 rounded-full text-sm tracking-wider transition-all duration-300 ${selectedCategory === cat
                         ? "bg-white text-black"
                         : "border border-white/30 hover:border-white/60"
-                    }`}
+                      }`}
                   >
                     {cat.toUpperCase()}
                   </button>
@@ -381,7 +393,7 @@ const navigate = useNavigate();
         </div>
 
         {/* BESPOKE CTA SECTION */}
-      
+
       </div>
     </div>
   );

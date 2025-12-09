@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
@@ -93,10 +93,10 @@ export default function SpiralJewelryScene({ modelPath = "/diamond_engagement_ri
     jewelryRef.current = group;
 
     const loader = new GLTFLoader();
-    const rgbe = new RGBELoader();
+    const HDR = new HDRLoader();
 
     // Load HDR
-    rgbe.load(envPath, (hdr) => {
+    HDR.load(envPath, (hdr) => {
       const envTex = pmremGen.fromEquirectangular(hdr).texture;
       scene.environment = envTex;
       scene.backgroundBlurriness = 0.5;
@@ -243,9 +243,18 @@ export default function SpiralJewelryScene({ modelPath = "/diamond_engagement_ri
   }, [modelPath, envPath]);
 
   return (
-    <div
+   <div
       ref={containerRef}
-      style={{ width: "50%", height: "100vh", position: "fixed", right: 0, top: 0, zIndex: 1, background: "transparent" }}
+      style={{ 
+        width: window.innerWidth < 768 ? "100%" : "50%", 
+        height: window.innerWidth < 768 ? "50vh" : "100vh", 
+        position: "fixed", 
+        right: 0, 
+        top: window.innerWidth < 768 ? "auto" : 0,
+        bottom: window.innerWidth < 768 ? 0 : "auto",
+        zIndex: 1, 
+        background: "transparent" 
+      }}
     />
   );
 }

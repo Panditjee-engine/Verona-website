@@ -72,7 +72,7 @@ export default function Home() {
       {/* NAVIGATION BAR */}
 
 
-      <Navbar activePage="home" cartCount={0} />
+      <Navbar activePage="home"/>
 
       {/* <Navbar /> */}
 
@@ -182,9 +182,10 @@ export default function Home() {
         -------------------------------------------------------- */}
         <section
           data-section="1"
-          className="h-screen flex items-center justify-end px-8 md:px-16"
+          className="h-screen flex items-center justify-end px-8 md:px-16 relative z-20"
+
         >
-          <div className="max-w-xl p-8 rounded-lg border border-white/10">
+          <div className="max-w-xl p-8 rounded-lg border border-white/10 pointer-events-auto">
             <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-4">
               The Signature Ring
             </h2>
@@ -197,13 +198,18 @@ export default function Home() {
               <p className="text-white-500">Starting at $8,500</p>
             </div>
 
+
             <button
-              onClick={() => navigate("/collectionPage")}
-              className="px-8 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium"
+              onClick={() => { console.log("clicked"); navigate("/collections/rings"); }}
+              className="mt-6 px-8 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium cursor-pointer"
             >
               Explore
             </button>
+
+
           </div>
+
+
         </section>
 
         {/* -------------------------------------------------------
@@ -211,23 +217,26 @@ export default function Home() {
         -------------------------------------------------------- */}
         <section
           data-section="2"
-          className="h-screen flex items-center justify-start px-8 md:px-16"
+          className="h-screen flex items-center justify-start px-8 md:px-16  relative z-20"
         >
-          <div className="max-w-xl p-8 rounded-lg border border-white/10">
+          <div className="max-w-xl p-8 rounded-lg border border-white/10 pointer-events-auto">
             <h2 className="text-4xl md:text-5xl font-light tracking-wider mb-4">
-              Bespoke Customization
+              The Braceletes
             </h2>
+
             <p className="text-white-300 mb-6 leading-relaxed">
-              Customize your piece from metal selection to stone specifications,
-              working directly with master jewelers.
+              A timeless fusion of craftsmanship and elegance — each bracelet is created
+              with precision, using ethically sourced metals and hand-selected stones to
+              achieve a flawless finish that feels as exquisite as it looks.
             </p>
             <div className="text-sm text-white-400">
-              <p>Unlimited Customization • Expert Consultation • Lifetime Care</p>
+              <p>18K Gold • Certified Stones • Handcrafted Excellence</p>
+              <p className="text-white-500">Starting at $12,500</p>
             </div>
 
             <button
-              onClick={() => navigate("/collectionPage")}
-              className="px-8 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium"
+              onClick={() => { console.log("clicked"); navigate("/collections/bracelets"); }}
+              className="mt-6 px-8 py-2 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium cursor-pointer"
             >
               Explore
             </button>

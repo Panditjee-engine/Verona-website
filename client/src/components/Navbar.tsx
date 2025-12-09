@@ -42,7 +42,7 @@ export default function Navbar({ activePage = "home", cartCount = 0 }) {
             {/* Right Side - Cart & Mobile Menu */}
             <div className="flex items-center gap-4">
               {/* Shopping Cart Icon (optional) */}
-              {cartCount !== undefined && (
+              {/* {cartCount !== undefined && (
                 <a href="/cart" className="relative p-2 hover:bg-white/5 rounded-full transition hidden md:block">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -53,7 +53,7 @@ export default function Navbar({ activePage = "home", cartCount = 0 }) {
                     </span>
                   )}
                 </a>
-              )}
+              )} */}
 
               {/* Mobile Menu Button */}
               <button

@@ -138,7 +138,7 @@ export default function ShopPage() {
         <div className="bg-black text-white min-h-screen">
             {/* NAVIGATION */}
 
-            <Navbar activePage="shop" cartCount={3} />
+            <Navbar activePage="shop" />
 
             {/* PASTE THE BACKGROUND IMAGE CODE HERE 👇 */}
             <div
@@ -381,7 +381,7 @@ export default function ShopPage() {
 
                     <div className="flex justify-center">
                         <button
-                            onClick={() => navigate("/collectionPage")}
+                            onClick={() => navigate("/collections/all")}
                             className="px-12 py-4 bg-white text-black rounded-full hover:bg-gray-200 transition-all duration-300 tracking-widest text-sm font-medium"
                         >
                             View All

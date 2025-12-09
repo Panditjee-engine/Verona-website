@@ -267,7 +267,16 @@ export default function CircularJewelryScene({ modelPath = "/ring-glb.glb", envP
   return (
     <div
       ref={containerRef}
-      style={{ width: "50%", height: "100vh", position: "fixed", top: 0, left: 0, right: 0, zIndex: 1, background: "transparent" }}
+      style={{ 
+        width: window.innerWidth < 768 ? "100%" : "50%", 
+        height: window.innerWidth < 768 ? "50vh" : "100vh", 
+        position: "fixed", 
+        left: 0, 
+        top: window.innerWidth < 768 ? "auto" : 0,
+        bottom: window.innerWidth < 768 ? 0 : "auto",
+        zIndex: 1, 
+        background: "transparent" 
+      }}
     />
   );
 }

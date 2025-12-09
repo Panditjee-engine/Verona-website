@@ -18,14 +18,20 @@ function AppRouter() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<AboutPage />} />
       <Route path="/shop" element={<ShopPage />} />
-      <Route path="/collectionPage" element={<CollectionPage />} />
+      {/* <Route path="/collectionPage" element={<CollectionPage />} /> */}
       <Route path="/contact" element={<ContactPage />} />
 
-      {/* Optional pages */}
+
       <Route path="/admin" element={<Admin />} />
       <Route path="/gradient" element={<GradientBackgroundPage />} />
 
-      {/* Redirect unknown routes to 404 */}
+      {/* Collections route */}
+      <Route path="/collections" element={<CollectionPage />} />
+      <Route path="/collections/:category" element={<CollectionPage />} />
+
+
+
+
       <Route path="/404" element={<NotFound />} />
       <Route path="*" element={<Navigate to="/404" replace />} />
     </Routes>
