@@ -7,4 +7,9 @@ export default defineConfig({
     environment: "node",
     include: ["server/**/*.test.ts", "server/**/*.spec.ts"],
   },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 });
